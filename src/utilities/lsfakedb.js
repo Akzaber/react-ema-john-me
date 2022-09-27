@@ -1,16 +1,15 @@
-const addToLs = (id) => {
-  let shoppingCart;
+// USe local Storage to manage Cart Data;
 
-  // get the shopping cart from the local storage..
-  const getStoredCart = localStorage.getItem('shopping-cart');
-  if(getStoredCart){
-    shoppingCart = JSON.parse(getStoredCart);
-  }
-  else{
-    shoppingCart = {};
+const addToDb = id => {
+  let shoppingCart = {};
+
+  // get cart from local Storage;
+  const storedCart = localStorage.getItem('shopping-cart');
+  if(storedCart){
+    shoppingCart = JSON.parse(storedCart);
   }
 
-  // add quantity---
+  // set Quantity;
   const quantity = shoppingCart[id];
   if(quantity){
     const newQuantity = quantity + 1;
@@ -19,7 +18,7 @@ const addToLs = (id) => {
   else{
     shoppingCart[id] = 1;
   }
-  localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+  localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart))
 }
 
-export {addToLs};
+export {addToDb}
