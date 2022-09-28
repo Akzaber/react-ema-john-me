@@ -16,15 +16,32 @@ const Main = () => {
 
   useEffect(() => {
     const getStoredCart = storedCart();
+    let newStoredProduct = [];
     for(const id in getStoredCart){
-      console.log(id);
+      const addedProduct = products.find(product => product.id === id);
+      if(addedProduct){
+        const quantity = getStoredCart[id];
+        addedProduct.quantity = quantity;
+        newStoredProduct.push(addedProduct);
+      }
     }
-  }, [])
+    setCart(newStoredProduct);
+  }, [products])
 
-  const handleItemInCart = (product) => {
-    const newCart = [...cart, product];
+  const handleItemInCart = (selectedProduct) => {
+    let newCart = [];
+    const exists = cart.find(product => product.id === selectedProduct.id);
+    if(!exists){
+      selectedProduct.quantity = 1;
+      newCart = [...cart, selectedProduct]
+    }
+    else{
+      const rest = cart.filter(product => selectedProduct.id !== product.id);
+      exists.quantity = exists.quantity + 1;
+      newCart = [...rest, exists];
+    }
     setCart(newCart);
-    addToDb(product.id);
+    addToDb(selectedProduct.id);
   }
 
   return (
